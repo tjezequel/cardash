@@ -27,6 +27,9 @@ class MusicPlayerController: ObservableObject {
     currentSong = player.nowPlayingItem
     playing = player.playbackState
     NotificationCenter.default.addObserver(self, selector: #selector(volumeChanged(notification:)), name: NSNotification.Name(rawValue: "AVSystemController_SystemVolumeDidChangeNotification"), object: nil)
+    Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { (_) in
+      self.currentSong = self.player.nowPlayingItem
+    }
   }
   
   func play() {
@@ -39,25 +42,35 @@ class MusicPlayerController: ObservableObject {
     playing = player.playbackState
   }
   
+  func next() {
+    player.skipToNextItem()
+    currentSong = player.nowPlayingItem
+  }
+  
+  func previous() {
+    player.skipToPreviousItem()
+    currentSong = player.nowPlayingItem
+  }
+  
   @objc func volumeChanged(notification:NSNotification)
   {
     let manager = LocationManager.sharedInstance
       let outVolume = notification.userInfo!["AVSystemController_AudioVolumeNotificationParameter"] as? Float
-      let category = notification.userInfo!["AVSystemController_AudioCategoryNotificationParameter"]
-      let reason = notification.userInfo!["AVSystemController_AudioVolumeChangeReasonNotificationParameter"]
+//      let category = notification.userInfo!["AVSystemController_AudioCategoryNotificationParameter"]
+//      let reason = notification.userInfo!["AVSystemController_AudioVolumeChangeReasonNotificationParameter"]
     
     guard let volume = outVolume else { return }
     
     if volume != currentTheoricalVolume {
       print("User changed volume applying new volume \(volume) / \(currentTheoricalVolume)")
-      baseVolume = volume-Float(manager.speed/1000)
+      baseVolume = volume-Float(manager.speed/750)
     }
   }
   
   var currentTheoricalVolume: Float {
     let manager = LocationManager.sharedInstance
-    print("theorical volume = \(Float(manager.speed/1000) + baseVolume)")
-    return Float(manager.speed/1000) + baseVolume
+    print("theorical volume = \(Float(manager.speed/750) + baseVolume)")
+    return Float(manager.speed/750) + baseVolume
   }
   
 }

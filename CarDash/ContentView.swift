@@ -11,6 +11,7 @@ import SwiftUIBlurView
 
 struct ContentView: View {
   
+  @Environment(\.colorScheme) var colorScheme: ColorScheme
   @ObservedObject var locationManager = LocationManager.sharedInstance
   @ObservedObject var musicManager = MusicPlayerController.sharedInstance
   var formatter = NumberFormatter()
@@ -21,32 +22,26 @@ struct ContentView: View {
   
   var body: some View {
     ZStack(alignment: .center){
-      MapView(location: locationManager.lastKnownLocation)
+      MapView(location: locationManager.lastKnownLocation).edgesIgnoringSafeArea(.all)
       VStack{
-        ZStack(alignment: .center) {
-          Circle().frame(width: 50, height: 50).foregroundColor(Color.red)
-          Text("\(formatter.string(from: NSNumber(value: locationManager.speed)) ?? "0")").fontWeight(.bold).foregroundColor(.white)
+        HStack {
+          ZStack(alignment: .center) {
+            BlurView(style: colorScheme == .some(ColorScheme.light) ? .light : .dark)
+            Circle().frame(width: 70, height: 70).foregroundColor(.clear).overlay(Circle().stroke(Color.primary, lineWidth: 4))
+            Text("\(formatter.string(from: NSNumber(value: locationManager.speed)) ?? "0")").foregroundColor(.primary).font(Font.system(size: 24, weight: .bold))
+            }.frame(width: 100, height: 100).cornerRadius(10)
+          Spacer()
         }
         Spacer()
         ZStack {
-          BlurView(style: .light)
+          BlurView(style: colorScheme == .some(ColorScheme.light) ? .light : .dark)
           VStack {
-            HStack {
-              Image(uiImage: musicManager.currentSong?.artwork?.image(at: CGSize(width: 75, height: 75)) ?? UIImage())
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .frame(width: 75, height: 75)
-                .cornerRadius(5)
-              VStack(alignment: .leading) {
-                Text(musicManager.currentSong?.title ?? "").fontWeight(.bold)
-                Text(musicManager.currentSong?.artist ?? "")
-                Text(musicManager.currentSong?.albumTitle ?? "")
-              }
-              Spacer()
-            }
+            AlbumInfo(currentSong: musicManager.currentSong)
             Spacer()
             HStack(spacing: 60) {
-              Image(systemName: "backward.end.fill").resizable().aspectRatio(contentMode: .fill).frame(width: 30, height: 30)
+              Image(systemName: "backward.end.fill").resizable().aspectRatio(contentMode: .fill).frame(width: 30, height: 30).onTapGesture {
+                self.musicManager.previous()
+              }
               if musicManager.playing == .playing {
                 Image(systemName: "pause.fill").resizable().aspectRatio(contentMode: .fill).frame(width: 30, height: 30).onTapGesture {
                   self.musicManager.pause()
@@ -56,13 +51,15 @@ struct ContentView: View {
                   self.musicManager.play()
                 }
               }
-              Image(systemName: "forward.end.fill").resizable().aspectRatio(contentMode: .fill).frame(width: 30, height: 30)
+              Image(systemName: "forward.end.fill").resizable().aspectRatio(contentMode: .fill).frame(width: 30, height: 30).onTapGesture {
+                self.musicManager.next()
+              }
             }
             Spacer()
             VolumeView(locationManager: locationManager.lastKnownLocation, volume: musicManager.volume).frame(maxHeight: 30)
           }.padding(15)
-        }.frame(maxWidth: .infinity, maxHeight: 250).cornerRadius(10)
-      }.padding(15).padding(.bottom, 20)
+        }.frame(maxWidth: .infinity, maxHeight: 200).cornerRadius(10)
+        }.padding(15).padding(.bottom, 20)
     }
   }
   
