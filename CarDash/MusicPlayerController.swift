@@ -11,7 +11,7 @@ import MediaPlayer
 import Combine
 import CoreLocation
 
-class MusicPlayerController: ObservableObject {
+class MusicPlayerController: NSObject, ObservableObject {
   
   static let sharedInstance = MusicPlayerController()
   
@@ -23,9 +23,10 @@ class MusicPlayerController: ObservableObject {
   
   var baseVolume: Float = 0.0
   
-  init() {
+  override init() {
     currentSong = player.nowPlayingItem
     playing = player.playbackState
+    super.init()
     NotificationCenter.default.addObserver(self, selector: #selector(volumeChanged(notification:)), name: NSNotification.Name(rawValue: "AVSystemController_SystemVolumeDidChangeNotification"), object: nil)
     Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { (_) in
       self.currentSong = self.player.nowPlayingItem
@@ -35,6 +36,7 @@ class MusicPlayerController: ObservableObject {
   func play() {
     player.play()
     playing = player.playbackState
+    currentSong = player.nowPlayingItem
   }
   
   func pause() {
@@ -77,6 +79,16 @@ extension MusicPlayerController: LocationManagerDelegate {
   
   func didUpdateLocation(location: CLLocation) {
     self.volume = currentTheoricalVolume
+  }
+  
+}
+
+extension MusicPlayerController: MPMediaPickerControllerDelegate {
+  
+  func mediaPicker(_ mediaPicker: MPMediaPickerController, didPickMediaItems mediaItemCollection: MPMediaItemCollection) {
+    print("Did select song")
+    player.setQueue(with: mediaItemCollection)
+    self.play()
   }
   
 }

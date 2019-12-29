@@ -10,6 +10,7 @@
 		0E40E65A23B4EA3600D48200 /* MusicPlayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E40E65923B4EA3600D48200 /* MusicPlayerController.swift */; };
 		0E40E65D23B4FA3600D48200 /* SwiftUIBlurView in Frameworks */ = {isa = PBXBuildFile; productRef = 0E40E65C23B4FA3600D48200 /* SwiftUIBlurView */; };
 		0E40E65F23B507DB00D48200 /* VolumeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E40E65E23B507DB00D48200 /* VolumeView.swift */; };
+		0EA9DD8323B91B2700A4FD6F /* MusicMediaPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EA9DD8223B91B2700A4FD6F /* MusicMediaPicker.swift */; };
 		0EDE864F23B40704006B9376 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EDE864E23B40704006B9376 /* AppDelegate.swift */; };
 		0EDE865123B40704006B9376 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EDE865023B40704006B9376 /* SceneDelegate.swift */; };
 		0EDE865323B40704006B9376 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EDE865223B40704006B9376 /* ContentView.swift */; };
@@ -50,6 +51,7 @@
 /* Begin PBXFileReference section */
 		0E40E65923B4EA3600D48200 /* MusicPlayerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicPlayerController.swift; sourceTree = "<group>"; };
 		0E40E65E23B507DB00D48200 /* VolumeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeView.swift; sourceTree = "<group>"; };
+		0EA9DD8223B91B2700A4FD6F /* MusicMediaPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicMediaPicker.swift; sourceTree = "<group>"; };
 		0EDE864B23B40704006B9376 /* CarDash.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CarDash.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0EDE864E23B40704006B9376 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0EDE865023B40704006B9376 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -143,6 +145,7 @@
 				0EF24F8723B7C8590056538D /* DebugLocationProvider.swift */,
 				0EF24FAA23B9158C0056538D /* CLLocationProvider.swift */,
 				0EF24FA823B912CA0056538D /* UserLocationAnnotation.swift */,
+				0EA9DD8223B91B2700A4FD6F /* MusicMediaPicker.swift */,
 			);
 			path = CarDash;
 			sourceTree = "<group>";
@@ -328,6 +331,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0EA9DD8323B91B2700A4FD6F /* MusicMediaPicker.swift in Sources */,
 				0EF24F8223B7BB750056538D /* Travel.swift in Sources */,
 				0EF24F8823B7C8590056538D /* DebugLocationProvider.swift in Sources */,
 				0EF24FAB23B9158C0056538D /* CLLocationProvider.swift in Sources */,

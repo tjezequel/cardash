@@ -14,6 +14,7 @@ struct ContentView: View {
   @Environment(\.colorScheme) var colorScheme: ColorScheme
   @ObservedObject var locationManager = LocationManager.sharedInstance
   @ObservedObject var musicManager = MusicPlayerController.sharedInstance
+  @State private var showImagePicker: Bool = false
   var formatter = NumberFormatter()
   
   init() {
@@ -37,6 +38,12 @@ struct ContentView: View {
           }.frame(height: 100).cornerRadius(10)
         }
         Spacer()
+        Button(action: {self.showImagePicker.toggle()}) {
+          Text("Music")
+        }
+        .sheet(isPresented: self.$showImagePicker) {
+             MusicMediaPicker()
+        }
         ZStack {
           BlurView(style: colorScheme == .some(ColorScheme.light) ? .light : .dark)
           VStack(spacing: 20) {
