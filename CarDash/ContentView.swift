@@ -25,29 +25,27 @@ struct ContentView: View {
     ZStack(alignment: .center){
       MapView(location: locationManager.lastKnownLocation).edgesIgnoringSafeArea(.all)
       VStack{
-        HStack {
+        HStack(spacing: 15) {
           ZStack(alignment: .center) {
             BlurView(style: colorScheme == .some(ColorScheme.light) ? .light : .dark)
             Circle().frame(width: 70, height: 70).foregroundColor(.clear).overlay(Circle().stroke(Color.primary, lineWidth: 4))
             Text("\(formatter.string(from: NSNumber(value: locationManager.speed)) ?? "0")").foregroundColor(.primary).font(Font.system(size: 24, weight: .bold))
           }.frame(width: 100, height: 100).cornerRadius(10)
-          Spacer()
           ZStack(alignment: .center) {
             BlurView(style: colorScheme == .some(ColorScheme.light) ? .light : .dark)
             Text("No navigation")
           }.frame(height: 100).cornerRadius(10)
         }
         Spacer()
-        Button(action: {self.showImagePicker.toggle()}) {
-          Text("Music")
-        }
         .sheet(isPresented: self.$showImagePicker) {
              MusicMediaPicker()
         }
         ZStack {
           BlurView(style: colorScheme == .some(ColorScheme.light) ? .light : .dark)
           VStack(spacing: 20) {
-            AlbumInfo(currentSong: musicManager.currentSong)
+            AlbumInfo(currentSong: musicManager.currentSong).onTapGesture {
+              self.showImagePicker.toggle()
+            }
             HStack(spacing: 60) {
               Image(systemName: "backward.end.fill").resizable().aspectRatio(contentMode: .fill).frame(width: 30, height: 30).onTapGesture {
                 self.musicManager.previous()

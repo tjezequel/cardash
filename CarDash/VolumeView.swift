@@ -11,21 +11,21 @@ import MediaPlayer
 import CoreLocation
 
 extension MPVolumeView {
-  static func setVolume(_ volume: Float) {
+  static func setVolume(_ volume: Double) {
     let volumeView = MPVolumeView()
     let slider = volumeView.subviews.first(where: { $0 is UISlider }) as? UISlider
 
     DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.25) {
-      slider?.setValue(volume, animated: true)
+      slider?.setValue(Float(volume), animated: true)
     }
   }
   
-  static func getVolume(completion: @escaping (Float?) -> Void) {
+  static func getVolume(completion: @escaping (Double?) -> Void) {
     let volumeView = MPVolumeView()
     let slider = volumeView.subviews.first(where: { $0 is UISlider }) as? UISlider
     
     DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.25) {
-      completion(slider?.value)
+      completion(Double(slider?.value ?? 0))
     }
   }
 }
@@ -33,7 +33,7 @@ extension MPVolumeView {
 struct VolumeView: UIViewRepresentable {
   
   var locationManager: CLLocation
-  var volume: Float
+  var volume: Double
   
   func makeUIView(context: UIViewRepresentableContext<VolumeView>) -> MPVolumeView {
     let view = MPVolumeView()
@@ -41,7 +41,6 @@ struct VolumeView: UIViewRepresentable {
   }
   
   func updateUIView(_ volumeView: MPVolumeView, context: UIViewRepresentableContext<VolumeView>) {
-    print("New Volume = \(volume)")
     MPVolumeView.setVolume(volume)
   }
   

@@ -19,14 +19,16 @@ class MusicPlayerController: NSObject, ObservableObject {
   
   @Published var currentSong: MPMediaItem?
   @Published var playing: MPMusicPlaybackState
-  @Published var volume: Float = 0.0
+  @Published var volume: Double = 0.0
   
-  var baseVolume: Float = 0.0
+  var baseVolume: Double = 0.0
   
   override init() {
+    self.baseVolume = SettingsManager.get(key: SettingsKeys.lastSessionBaseVolume)
     currentSong = player.nowPlayingItem
     playing = player.playbackState
     super.init()
+    loadPreviousData()
     NotificationCenter.default.addObserver(self, selector: #selector(volumeChanged(notification:)), name: NSNotification.Name(rawValue: "AVSystemController_SystemVolumeDidChangeNotification"), object: nil)
     Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { (_) in
       self.currentSong = self.player.nowPlayingItem
@@ -54,23 +56,40 @@ class MusicPlayerController: NSObject, ObservableObject {
     currentSong = player.nowPlayingItem
   }
   
+  func loadPreviousData() {
+    guard let collection = SettingsManager.get(key: SettingsKeys.lastSessionContentId) else { return }
+    var mediaCollection = [MPMediaItem]()
+    for item in collection {
+      let predicate = MPMediaPropertyPredicate(value: item, forProperty: MPMediaItemPropertyPersistentID)
+      let query = MPMediaQuery()
+      query.addFilterPredicate(predicate)
+      guard let items = query.items else { continue }
+      for queryItem in items {
+        mediaCollection.append(queryItem)
+      }
+    }
+    self.player.setQueue(with: MPMediaItemCollection(items: mediaCollection))
+    self.player.prepareToPlay()
+  }
+  
   @objc func volumeChanged(notification:NSNotification)
   {
     let manager = LocationManager.sharedInstance
-    let outVolume = notification.userInfo!["AVSystemController_AudioVolumeNotificationParameter"] as? Float
+    let outVolume = notification.userInfo!["AVSystemController_AudioVolumeNotificationParameter"] as? Double
     //      let category = notification.userInfo!["AVSystemController_AudioCategoryNotificationParameter"]
     //      let reason = notification.userInfo!["AVSystemController_AudioVolumeChangeReasonNotificationParameter"]
     
     guard let volume = outVolume else { return }
     
     if volume != currentTheoricalVolume {
-      baseVolume = volume-Float(manager.speed/750)
+      baseVolume = volume - Double(manager.speed/750)
+      SettingsManager.set(key: SettingsKeys.lastSessionBaseVolume, value: Double(baseVolume))
     }
   }
   
-  var currentTheoricalVolume: Float {
+  var currentTheoricalVolume: Double {
     let manager = LocationManager.sharedInstance
-    return Float(manager.speed/750) + baseVolume
+    return manager.speed/750.0 + baseVolume
   }
   
 }
@@ -86,7 +105,10 @@ extension MusicPlayerController: LocationManagerDelegate {
 extension MusicPlayerController: MPMediaPickerControllerDelegate {
   
   func mediaPicker(_ mediaPicker: MPMediaPickerController, didPickMediaItems mediaItemCollection: MPMediaItemCollection) {
-    print("Did select song")
+    let ids = mediaItemCollection.items.map { (item) -> UInt64 in
+      return item.persistentID
+    }
+    SettingsManager.set(key: SettingsKeys.lastSessionContentId, value: ids)
     player.setQueue(with: mediaItemCollection)
     self.play()
   }

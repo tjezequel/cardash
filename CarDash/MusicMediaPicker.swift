@@ -13,7 +13,7 @@ struct MusicMediaPicker: UIViewControllerRepresentable {
   typealias UIViewControllerType = MPMediaPickerController
 
   func makeUIViewController(context: UIViewControllerRepresentableContext<MusicMediaPicker>) -> MPMediaPickerController {
-    let picker = MPMediaPickerController(mediaTypes: .music)
+    let picker = MPMediaPickerController(mediaTypes: .anyAudio)
     picker.allowsPickingMultipleItems = true
     picker.showsCloudItems = true
     return picker

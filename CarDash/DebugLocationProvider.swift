@@ -30,8 +30,8 @@ class DebugLocationProvider: LocationProvider {
   var delegate: LocationProviderDelegate?
   
   init() {
-    loadTravel(name: "work", extension: "json")
-    startTravel()
+//    loadTravel(name: "work", extension: "json")
+//    startTravel()
   }
   
   func loadTravel(name: String, extension: String) {
@@ -92,7 +92,6 @@ class DebugLocationProvider: LocationProvider {
     let bearadian = atan2(X,Y)
     let bearingDeg = bearadian * 180 / .pi
     let direction = (bearingDeg >= 0) ? bearingDeg : 360 + bearingDeg
-    print("Bearing : \(bearingDeg) / Direction : \(direction)")
     return CLLocation(coordinate: CLLocationCoordinate2D(latitude: finalLatitude, longitude: finalLongitude), altitude: 0, horizontalAccuracy: 1, verticalAccuracy: 1, course: direction, speed: speed, timestamp: Date())
   }
   
