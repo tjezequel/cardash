@@ -15,7 +15,7 @@ class MusicPlayerController: ObservableObject {
   
   static let sharedInstance = MusicPlayerController()
   
-  var player = MPMusicPlayerController.systemMusicPlayer
+  var player = MPMusicPlayerController.applicationMusicPlayer
   
   @Published var currentSong: MPMediaItem?
   @Published var playing: MPMusicPlaybackState
@@ -55,21 +55,19 @@ class MusicPlayerController: ObservableObject {
   @objc func volumeChanged(notification:NSNotification)
   {
     let manager = LocationManager.sharedInstance
-      let outVolume = notification.userInfo!["AVSystemController_AudioVolumeNotificationParameter"] as? Float
-//      let category = notification.userInfo!["AVSystemController_AudioCategoryNotificationParameter"]
-//      let reason = notification.userInfo!["AVSystemController_AudioVolumeChangeReasonNotificationParameter"]
+    let outVolume = notification.userInfo!["AVSystemController_AudioVolumeNotificationParameter"] as? Float
+    //      let category = notification.userInfo!["AVSystemController_AudioCategoryNotificationParameter"]
+    //      let reason = notification.userInfo!["AVSystemController_AudioVolumeChangeReasonNotificationParameter"]
     
     guard let volume = outVolume else { return }
     
     if volume != currentTheoricalVolume {
-      print("User changed volume applying new volume \(volume) / \(currentTheoricalVolume)")
       baseVolume = volume-Float(manager.speed/750)
     }
   }
   
   var currentTheoricalVolume: Float {
     let manager = LocationManager.sharedInstance
-    print("theorical volume = \(Float(manager.speed/750) + baseVolume)")
     return Float(manager.speed/750) + baseVolume
   }
   

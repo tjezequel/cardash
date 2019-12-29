@@ -29,15 +29,18 @@ struct ContentView: View {
             BlurView(style: colorScheme == .some(ColorScheme.light) ? .light : .dark)
             Circle().frame(width: 70, height: 70).foregroundColor(.clear).overlay(Circle().stroke(Color.primary, lineWidth: 4))
             Text("\(formatter.string(from: NSNumber(value: locationManager.speed)) ?? "0")").foregroundColor(.primary).font(Font.system(size: 24, weight: .bold))
-            }.frame(width: 100, height: 100).cornerRadius(10)
+          }.frame(width: 100, height: 100).cornerRadius(10)
           Spacer()
+          ZStack(alignment: .center) {
+            BlurView(style: colorScheme == .some(ColorScheme.light) ? .light : .dark)
+            Text("No navigation")
+          }.frame(height: 100).cornerRadius(10)
         }
         Spacer()
         ZStack {
           BlurView(style: colorScheme == .some(ColorScheme.light) ? .light : .dark)
-          VStack {
+          VStack(spacing: 20) {
             AlbumInfo(currentSong: musicManager.currentSong)
-            Spacer()
             HStack(spacing: 60) {
               Image(systemName: "backward.end.fill").resizable().aspectRatio(contentMode: .fill).frame(width: 30, height: 30).onTapGesture {
                 self.musicManager.previous()
@@ -55,11 +58,10 @@ struct ContentView: View {
                 self.musicManager.next()
               }
             }
-            Spacer()
             VolumeView(locationManager: locationManager.lastKnownLocation, volume: musicManager.volume).frame(maxHeight: 30)
           }.padding(15)
-        }.frame(maxWidth: .infinity, maxHeight: 200).cornerRadius(10)
-        }.padding(15).padding(.bottom, 20)
+          }.frame(height: 200).cornerRadius(10)
+      }.padding(15).padding(.bottom, 20)
     }
   }
   

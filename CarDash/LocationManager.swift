@@ -14,11 +14,13 @@ protocol LocationManagerDelegate {
   func didUpdateLocation(location: CLLocation)
 }
 
-class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObject {
+class LocationManager: LocationProviderDelegate, ObservableObject {
   
   static var sharedInstance = LocationManager()
   
-  let locationManager = CLLocationManager()
+  var debugLocationProvider = DebugLocationProvider.sharedInstance
+  var realLocationProvider = CLLocationProvider.sharedInstance
+  
   let delegate = MusicPlayerController.sharedInstance
   
   var lastUpdateTime = Date()
@@ -27,27 +29,19 @@ class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObject {
   ///Speed in Km/h
   @Published var speed: Double = 0
   
-  override init() {
-    lastKnownLocation = CLLocation(latitude: 48.3733, longitude: -4.3694)
-    super.init()
-    askPermission()
-    locationManager.desiredAccuracy = kCLLocationAccuracyBest
-    locationManager.startUpdatingLocation()
-    locationManager.pausesLocationUpdatesAutomatically = false
-    locationManager.delegate = self
+  init() {
+    lastKnownLocation = CLLocation(latitude: 48.381963, longitude: -4.350903)
+//    debugLocationProvider.delegate = self
+    realLocationProvider.delegate = self
   }
   
-  func askPermission() {
-    locationManager.requestWhenInUseAuthorization()
-  }
-  
-  func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+  func didRecieveLocationUpdate(locations: [CLLocation]) {
     guard let location = locations.last else {
       print("#ERROR# - No location in update")
       return
     }
+    print("Location : \(location.coordinate)")
     self.speed = max(location.speed*3.6, 0)
-    print("Speed = \(speed)")
     lastKnownLocation = location
     delegate.didUpdateLocation(location: location)
   }

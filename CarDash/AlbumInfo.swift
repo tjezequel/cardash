@@ -14,14 +14,14 @@ struct AlbumInfo: View {
   var currentSong: MPMediaItem?
   
     var body: some View {
-        return HStack {
-          Image(uiImage: currentSong?.artwork?.image(at: CGSize(width: 75, height: 75)) ?? UIImage())
+        return HStack(spacing: 16) {
+          Image(uiImage: currentSong?.artwork?.image(at: CGSize(width: 75, height: 75)) ?? UIImage(named: "SampleArtwork")!)
             .resizable()
             .aspectRatio(contentMode: .fill)
             .frame(width: 75, height: 75)
             .cornerRadius(5)
           VStack(alignment: .leading) {
-            Text(currentSong?.title ?? "").font(Font.system(size: 24, weight: .bold))
+            Text(currentSong?.title ?? "Music").font(Font.system(size: 24, weight: .bold))
             Text(currentSong?.artist ?? "").font(Font.system(size: 14))
             Text(currentSong?.albumTitle ?? "").font(Font.system(size: 14))
           }
