@@ -40,7 +40,6 @@ class LocationManager: LocationProviderDelegate, ObservableObject {
       print("#ERROR# - No location in update")
       return
     }
-    print("Location : \(location.coordinate)")
     self.speed = max(location.speed*3.6, 0)
     lastKnownLocation = location
     delegate.didUpdateLocation(location: location)

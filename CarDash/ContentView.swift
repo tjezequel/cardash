@@ -13,12 +13,9 @@ struct ContentView: View {
   
   @Environment(\.colorScheme) var colorScheme: ColorScheme
   @ObservedObject var locationManager = LocationManager.sharedInstance
-  @ObservedObject var musicManager = MusicPlayerController.sharedInstance
-  @State private var showImagePicker: Bool = false
-  var formatter = NumberFormatter()
   
-  init() {
-    formatter.maximumFractionDigits = 0
+  var integerSpeed: Int {
+    return Int(locationManager.speed.rounded())
   }
   
   var body: some View {
@@ -29,7 +26,7 @@ struct ContentView: View {
           ZStack(alignment: .center) {
             BlurView(style: colorScheme == .some(ColorScheme.light) ? .light : .dark)
             Circle().frame(width: 70, height: 70).foregroundColor(.clear).overlay(Circle().stroke(Color.primary, lineWidth: 4))
-            Text("\(formatter.string(from: NSNumber(value: locationManager.speed)) ?? "0")").foregroundColor(.primary).font(Font.system(size: 24, weight: .bold))
+            Text("\(integerSpeed)").foregroundColor(.primary).font(Font.system(size: 24, weight: .bold))
           }.frame(width: 100, height: 100).cornerRadius(10)
           ZStack(alignment: .center) {
             BlurView(style: colorScheme == .some(ColorScheme.light) ? .light : .dark)
@@ -37,37 +34,10 @@ struct ContentView: View {
           }.frame(height: 100).cornerRadius(10)
         }
         Spacer()
-        .sheet(isPresented: self.$showImagePicker) {
-             MusicMediaPicker()
-        }
-        ZStack {
-          BlurView(style: colorScheme == .some(ColorScheme.light) ? .light : .dark)
-          VStack(spacing: 20) {
-            AlbumInfo(currentSong: musicManager.currentSong).onTapGesture {
-              self.showImagePicker.toggle()
-            }
-            HStack(spacing: 60) {
-              Image(systemName: "backward.end.fill").resizable().aspectRatio(contentMode: .fill).frame(width: 30, height: 30).onTapGesture {
-                self.musicManager.previous()
-              }
-              if musicManager.playing == .playing {
-                Image(systemName: "pause.fill").resizable().aspectRatio(contentMode: .fill).frame(width: 30, height: 30).onTapGesture {
-                  self.musicManager.pause()
-                }
-              } else {
-                Image(systemName: "play.fill").resizable().aspectRatio(contentMode: .fill).frame(width: 30, height: 30).onTapGesture {
-                  self.musicManager.play()
-                }
-              }
-              Image(systemName: "forward.end.fill").resizable().aspectRatio(contentMode: .fill).frame(width: 30, height: 30).onTapGesture {
-                self.musicManager.next()
-              }
-            }
-            VolumeView(locationManager: locationManager.lastKnownLocation, volume: musicManager.volume).frame(maxHeight: 30)
-          }.padding(15)
-          }.frame(height: 200).cornerRadius(10)
+        MusicPanel()
       }.padding(15).padding(.bottom, 20)
     }
+
   }
   
 }

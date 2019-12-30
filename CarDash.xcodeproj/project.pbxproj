@@ -10,6 +10,8 @@
 		0E40E65A23B4EA3600D48200 /* MusicPlayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E40E65923B4EA3600D48200 /* MusicPlayerController.swift */; };
 		0E40E65D23B4FA3600D48200 /* SwiftUIBlurView in Frameworks */ = {isa = PBXBuildFile; productRef = 0E40E65C23B4FA3600D48200 /* SwiftUIBlurView */; };
 		0E40E65F23B507DB00D48200 /* VolumeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E40E65E23B507DB00D48200 /* VolumeView.swift */; };
+		0E5907AC23BA90B900EE6EFB /* MusicPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E5907AB23BA90B900EE6EFB /* MusicPanel.swift */; };
+		0E5907AE23BA929400EE6EFB /* PlaylistPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E5907AD23BA929400EE6EFB /* PlaylistPicker.swift */; };
 		0EA9DD8323B91B2700A4FD6F /* MusicMediaPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EA9DD8223B91B2700A4FD6F /* MusicMediaPicker.swift */; };
 		0EA9DDC123B94A9000A4FD6F /* SettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EA9DDC023B94A9000A4FD6F /* SettingsManager.swift */; };
 		0EDE864F23B40704006B9376 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EDE864E23B40704006B9376 /* AppDelegate.swift */; };
@@ -52,6 +54,8 @@
 /* Begin PBXFileReference section */
 		0E40E65923B4EA3600D48200 /* MusicPlayerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicPlayerController.swift; sourceTree = "<group>"; };
 		0E40E65E23B507DB00D48200 /* VolumeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeView.swift; sourceTree = "<group>"; };
+		0E5907AB23BA90B900EE6EFB /* MusicPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicPanel.swift; sourceTree = "<group>"; };
+		0E5907AD23BA929400EE6EFB /* PlaylistPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistPicker.swift; sourceTree = "<group>"; };
 		0EA9DD8223B91B2700A4FD6F /* MusicMediaPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicMediaPicker.swift; sourceTree = "<group>"; };
 		0EA9DDC023B94A9000A4FD6F /* SettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsManager.swift; sourceTree = "<group>"; };
 		0EDE864B23B40704006B9376 /* CarDash.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CarDash.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -106,6 +110,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0E5907AA23BA90AD00EE6EFB /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				0E5907AB23BA90B900EE6EFB /* MusicPanel.swift */,
+				0E5907AD23BA929400EE6EFB /* PlaylistPicker.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		0EDE864223B40703006B9376 = {
 			isa = PBXGroup;
 			children = (
@@ -129,6 +142,7 @@
 		0EDE864D23B40704006B9376 /* CarDash */ = {
 			isa = PBXGroup;
 			children = (
+				0E5907AA23BA90AD00EE6EFB /* Views */,
 				0EF24F8423B7BE360056538D /* Model */,
 				0EF24F8323B7BE260056538D /* SampleTravels */,
 				0EDE864E23B40704006B9376 /* AppDelegate.swift */,
@@ -343,11 +357,13 @@
 				0EDE867F23B40798006B9376 /* MapView.swift in Sources */,
 				0E40E65A23B4EA3600D48200 /* MusicPlayerController.swift in Sources */,
 				0EDE868123B408FA006B9376 /* LocationManager.swift in Sources */,
+				0E5907AE23BA929400EE6EFB /* PlaylistPicker.swift in Sources */,
 				0EF24F7E23B7B1660056538D /* BlurView.swift in Sources */,
 				0EDE865123B40704006B9376 /* SceneDelegate.swift in Sources */,
 				0EF24FA923B912CA0056538D /* UserLocationAnnotation.swift in Sources */,
 				0EA9DDC123B94A9000A4FD6F /* SettingsManager.swift in Sources */,
 				0EF24F8023B7B2920056538D /* TravelPoint.swift in Sources */,
+				0E5907AC23BA90B900EE6EFB /* MusicPanel.swift in Sources */,
 				0EDE865323B40704006B9376 /* ContentView.swift in Sources */,
 				0EF24F7C23B764900056538D /* AlbumInfo.swift in Sources */,
 			);

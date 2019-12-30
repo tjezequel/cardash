@@ -21,6 +21,8 @@ class MusicPlayerController: NSObject, ObservableObject {
   @Published var playing: MPMusicPlaybackState
   @Published var volume: Double = 0.0
   
+  let roundingNumber = 100.0
+  
   var baseVolume: Double = 0.0
   
   override init() {
@@ -32,6 +34,11 @@ class MusicPlayerController: NSObject, ObservableObject {
     NotificationCenter.default.addObserver(self, selector: #selector(volumeChanged(notification:)), name: NSNotification.Name(rawValue: "AVSystemController_SystemVolumeDidChangeNotification"), object: nil)
     Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { (_) in
       self.currentSong = self.player.nowPlayingItem
+      guard var collection = SettingsManager.get(key: SettingsKeys.lastSessionContentId) as [UInt64]? else { return }
+      collection.removeAll { (id) -> Bool in
+        id == self.currentSong?.persistentID ?? 0
+      }
+      SettingsManager.set(key: SettingsKeys.lastSessionContentId, value: collection) 
     }
   }
   
@@ -81,15 +88,19 @@ class MusicPlayerController: NSObject, ObservableObject {
     
     guard let volume = outVolume else { return }
     
-    if volume != currentTheoricalVolume {
-      baseVolume = volume - Double(manager.speed/750)
+    let roundVolume = Double(round(volume*roundingNumber)/roundingNumber)
+    
+    print("Round Volume : \(roundVolume) / \(currentTheoricalVolume)")
+    
+    if roundVolume != currentTheoricalVolume {
+      baseVolume = volume - Double(round((manager.speed/750)*roundingNumber)/roundingNumber)
       SettingsManager.set(key: SettingsKeys.lastSessionBaseVolume, value: Double(baseVolume))
     }
   }
   
   var currentTheoricalVolume: Double {
     let manager = LocationManager.sharedInstance
-    return manager.speed/750.0 + baseVolume
+    return Double(round((manager.speed/750.0 + baseVolume) * roundingNumber)/roundingNumber)
   }
   
 }
